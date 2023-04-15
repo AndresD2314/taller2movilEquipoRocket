@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">taller2movil</string>
+    <string name="contacts">contacts</string>
+    <string name="images">images</string>
+    <string name="maps">maps</string>
+    <string name="title_activity_maps">MapsActivity</string>
+</resources>
