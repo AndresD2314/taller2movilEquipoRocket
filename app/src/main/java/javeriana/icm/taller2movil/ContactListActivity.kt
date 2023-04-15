@@ -63,6 +63,7 @@ class ContactListActivity : AppCompatActivity() {
         )
 
         cursor?.let {
+            var contactCounter = 1
             while (it.moveToNext()) {
                 val name = it.getString(it.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
 
@@ -70,8 +71,10 @@ class ContactListActivity : AppCompatActivity() {
                 contact["name"] = name
                 val photoResId = R.drawable.contactos
                 contact["photo"] = photoResId
+                contact["number"] = "Contacto $contactCounter"
 
                 contactList.add(contact)
+                contactCounter++
             }
             it.close()
         }
@@ -80,8 +83,8 @@ class ContactListActivity : AppCompatActivity() {
             this,
             contactList,
             R.layout.activity_contact_list,
-            arrayOf("name", "photo"),
-            intArrayOf(R.id.contact_name, R.id.contact_image)
+            arrayOf("name", "photo", "number"),
+            intArrayOf(R.id.contact_name, R.id.contact_image, R.id.contact_number)
         )
 
         adapter.setViewBinder { view, data, _ ->
@@ -97,4 +100,5 @@ class ContactListActivity : AppCompatActivity() {
 
         listView.adapter = adapter
     }
+
 }
