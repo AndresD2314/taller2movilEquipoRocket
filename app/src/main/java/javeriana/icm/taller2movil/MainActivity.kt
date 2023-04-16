@@ -13,6 +13,8 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         private const val PERMISSIONS_REQUEST_READ_CONTACTS = 100
+        private const val PERMISSIONS_REQUEST_CAMERA_AND_STORAGE = 101
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +46,29 @@ class MainActivity : AppCompatActivity() {
                 )
             }
         }
+
+        btnImages.setOnClickListener{
+            val cameraPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+            val storagePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            val permissions = mutableListOf<String>()
+            if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
+                permissions.add(Manifest.permission.CAMERA)
+            }
+            if (storagePermission != PackageManager.PERMISSION_GRANTED) {
+                permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            }
+            if (permissions.isNotEmpty()) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    permissions.toTypedArray(),
+                    PERMISSIONS_REQUEST_CAMERA_AND_STORAGE
+                )
+            } else {
+                val intent = Intent(this, LoadImageActivity::class.java)
+                startActivity(intent)
+            }
+        }
+
     }
 
     override fun onRequestPermissionsResult(
@@ -52,11 +77,20 @@ class MainActivity : AppCompatActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == PERMISSIONS_REQUEST_READ_CONTACTS) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                val intent = Intent(this, ContactListActivity::class.java)
-                startActivity(intent)
+        when (requestCode) {
+            PERMISSIONS_REQUEST_READ_CONTACTS -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    val intent = Intent(this, ContactListActivity::class.java)
+                    startActivity(intent)
+                }
+            }
+            PERMISSIONS_REQUEST_CAMERA_AND_STORAGE -> {
+                if (grantResults.isNotEmpty() && grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
+                    val intent = Intent(this, LoadImageActivity::class.java)
+                    startActivity(intent)
+                }
             }
         }
     }
+
 }

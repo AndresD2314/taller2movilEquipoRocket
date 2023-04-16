@@ -4,4 +4,6 @@
     <string name="images">images</string>
     <string name="maps">maps</string>
     <string name="title_activity_maps">MapsActivity</string>
+    <string name="seleccionar_imagen">Seleccionar Imagen</string>
+    <string name="camara">Camara</string>
 </resources>
